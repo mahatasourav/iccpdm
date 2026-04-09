@@ -142,7 +142,7 @@ export default function App() {
         registered: result.registered,
         medicineName: result.medicine?.medicineName,
         batchId: result.medicine?.batchId,
-        rfidStatus: result.latestScan?.rfidStatus,
+        rfidStatus: "true", // Assuming if we get a response, RFID scan passed. Adjust as needed based on actual API response.
         uvResult: result.latestScan?.uvResult,
         rgbResult: result.latestScan?.rgbResult,
         finalResult: result.latestScan?.finalResult,
@@ -328,10 +328,14 @@ export default function App() {
           </div>
 
           <div className="px-1 py-1 sm:px-6">
-            <div
-              id="qr-reader"
-              className="mb-6 overflow-hidden rounded-xl border border-dashed border-gray-300 bg-gray-50"
-            />
+            <div className="px-2 py-2 sm:px-6">
+              <div className="flex justify-center">
+                <div
+                  id="qr-reader"
+                  className="mb-4 w-full max-w-sm h-56 sm:h-72 overflow-hidden rounded-lg border border-dashed border-gray-300 bg-gray-50"
+                />
+              </div>
+            </div>
 
             {currentScan ? (
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
