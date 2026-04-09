@@ -1,9 +1,10 @@
 // src/App.tsx
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import StatsOverview from './components/StatsOverview';
-import RecentScans from './components/RecentScans';
-import ScanDetails from './components/ScanDetails';
+import { useEffect, useState } from "react";
+import axios from "axios";
+import StatsOverview from "./components/StatsOverview";
+import RecentScans from "./components/RecentScans";
+import ScanDetails from "./components/ScanDetails";
+import QRScannerExample from "./components/QRScannerExample";
 
 interface Stats {
   totalScans: number;
@@ -31,7 +32,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
   // Fetch statistics
   const fetchStats = async () => {
@@ -39,20 +40,22 @@ export default function App() {
       const response = await axios.get(`${apiUrl}/api/stats/summary`);
       setStats(response.data.data || response.data);
     } catch (err) {
-      console.error('Failed to fetch stats:', err);
-      setError('Failed to load statistics');
+      console.error("Failed to fetch stats:", err);
+      setError("Failed to load statistics");
     }
   };
 
   // Fetch recent scans
   const fetchRecentScans = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/stats/recent-scans?limit=20`);
+      const response = await axios.get(
+        `${apiUrl}/api/stats/recent-scans?limit=20`,
+      );
       const scans = response.data.data || response.data;
       setRecentScans(Array.isArray(scans) ? scans : []);
     } catch (err) {
-      console.error('Failed to fetch scans:', err);
-      setError('Failed to load recent scans');
+      console.error("Failed to fetch scans:", err);
+      setError("Failed to load recent scans");
     }
   };
 
@@ -87,7 +90,10 @@ export default function App() {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-4xl font-bold">Judge Dashboard</h1>
-              <p className="text-blue-100 mt-2">Counterfeit Medicine Detection System</p>
+              <p className="text-blue-100 mt-2">
+                Counterfeit Medicine Detection System
+              </p>
+              <QRScannerExample />
             </div>
             <div className="text-right">
               <div className="text-sm text-blue-100">Backend: {apiUrl}</div>
