@@ -212,7 +212,6 @@ app.post("/api/scans", async (req, res) => {
       rgbResult: rgbResult || "N/A",
       rgbValue: rgbValue || { r: 0, g: 0, b: 0, c: 0 },
       finalResult: finalResult || "UNKNOWN",
-      deviceId: deviceId || "ESP32-001",
     };
 
     const scanId = await addScanRecord(scanRecord);
@@ -241,20 +240,31 @@ app.post("/api/scans", async (req, res) => {
 app.get("/api/scans/:uid", async (req, res) => {
   try {
     const { uid } = req.params;
-    const limit = parseInt(req.query.limit, 10) || 10;
 
-    const allScans = await getRecentScans(100);
-    const medicineScans = allScans
-      .filter((scan) => scan.uid === uid)
-      .slice(0, limit);
+    // Step 1: check medicine database
+    const medicine = await getMedicineRecord(uid);
+
+    if (!medicine) {
+      return res.status(404).json({
+        success: false,
+        registered: false,
+        uid,
+        message: "Medicine not registered",
+      });
+    }
+
+    // Step 2: get latest scan
+    const scans = await getRecentScans(100);
+    const latestScan = scans.find((s) => s.uid === uid) || null;
 
     res.json({
       success: true,
-      data: medicineScans,
-      message: `Last ${limit} scans for ${uid}`,
+      registered: true,
+      uid,
+      medicine,
+      latestScan,
     });
   } catch (error) {
-    console.error("Error fetching scans:", error);
     res.status(500).json({
       success: false,
       error: error.message,
