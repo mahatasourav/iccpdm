@@ -1,4 +1,4 @@
-/* tsconfig.json */{
+{
   "compilerOptions": {
     "target": "es2020",
     "useDefineForClassFields": true,
@@ -9,14 +9,12 @@
     ],
     "module": "esnext",
     "skipLibCheck": true,
-    /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -26,8 +24,7 @@
     "esModuleInterop": true
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx"
+    "src"
   ],
   "references": [
     {
@@ -35,6 +32,8 @@
     }
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist",
+    "vite.config.ts"
   ]
 }
